@@ -1,10 +1,26 @@
-require('colors');
+import { inquirerMenu, pausa } from './helpers/inquirer.js';
+
+
+
 console.clear();
 
 
 const main = async () => {
 
-    console.log('hola mundo');
+    let opt = '';
+    do {
+
+
+        opt = await inquirerMenu();
+        console.log({ opt });
+
+        await pausa();
+
+    } while (opt !== '7');
+
+
+
+
 };
 
 
