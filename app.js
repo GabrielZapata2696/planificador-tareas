@@ -1,3 +1,4 @@
+import { guardarDB, leerDB } from './helpers/guardarArchivo.js';
 import { inquirerMenu, pausa, leerInput } from './helpers/inquirer.js';
 
 
@@ -10,6 +11,14 @@ const main = async () => {
 
     let opt = '';
     const tareas = new Tareas();
+    const tareasDB = leerDB();
+
+    if (tareasDB) {
+        //establecer las tareas
+        tareas.cargarTareasDB(tareasDB);
+
+    }
+
     do {
         //imprime el menu en la consola
         opt = await inquirerMenu();
@@ -22,10 +31,21 @@ const main = async () => {
                 break;
             case '2':
                 //listar tarea
-                console.log(tareas.listadoArr);
+                tareas.listadoCompleto();
                 break;
-
+            case '3':
+                //listar tarea completadas
+                tareas.listarTareasFiltro(true);
+                break;
+            case '4':
+                //listar tarea pendientes
+                tareas.listarTareasFiltro(false);
+                break;
         }
+
+
+        guardarDB(tareas.listadoArr);
+
 
         await pausa();
 
