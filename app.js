@@ -1,5 +1,5 @@
 import { guardarDB, leerDB } from './helpers/guardarArchivo.js';
-import { inquirerMenu, pausa, leerInput } from './helpers/inquirer.js';
+import { inquirerMenu, pausa, leerInput, listadoTareasBorrar, confirmar, mostrarListadoChecklist } from './helpers/inquirer.js';
 
 
 import { Tareas } from './models/tareas.js';
@@ -41,6 +41,24 @@ const main = async () => {
                 //listar tarea pendientes
                 tareas.listarTareasFiltro(false);
                 break;
+            case '5':
+                //completado | pendiernte
+                const ids = await mostrarListadoChecklist(tareas.listadoArr);
+                tareas.cambiarCompletadas(ids);
+                break;
+            case '6':
+                //borrar tarea
+                const id = await listadoTareasBorrar(tareas.listadoArr);
+                if (id !== '0') {
+                    const ok = await confirmar('¿Está seguro?');
+                    if (ok) {
+                        tareas.borrarTarea(id);
+                        console.log('\n Tarea borrada');
+                    }
+                }
+
+                break;
+
         }
 
 
